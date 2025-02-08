@@ -1,0 +1,22 @@
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+ul,
+li,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  vertical-align: top;
+}
+
+* {
+  box-sizing: border-box;
+  outline: none;
+}
