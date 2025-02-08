@@ -1,14 +1,20 @@
 <template>
   <div class="app">
-    <h1>app</h1>
+    <RouterView />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { RouterView } from 'vue-router';
+
+</script>
 
 <style lang="less" scoped>
 .app {
   width: 100vw;
   height: 100vh;
 }
+
 </style>
+
+
