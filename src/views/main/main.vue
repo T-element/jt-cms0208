@@ -1,14 +1,20 @@
 <template>
   <div class="main">
     <el-container class="container">
-      <el-aside class="aside" :width="isCollapse ? '60px' : '210px'">
-        <MainAside ref="mainAsideRef" :menuList="mainStore.roleMenu" />
+      <el-aside class="aside" :width="!!isCollapse ? '60px' : '210px'">
+        <MainAside
+          ref="mainAsideRef"
+          :menuList="mainStore.roleMenu"
+          :default-active="currentActive"
+        />
       </el-aside>
       <el-container>
         <el-header class="header">
-          <MainHeader :is-collapse="isCollapse" @change-collapse="onChangeCollapse" />
+          <MainHeader :is-collapse="!!isCollapse" @change-collapse="onChangeCollapse" />
         </el-header>
-        <el-main class="main">Main</el-main>
+        <el-main class="main">
+          <RouterView />
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -18,10 +24,11 @@
 import useMainStore from '@/stores/main/main'
 import MainAside from './cpns/mainAside.vue'
 import MainHeader from './cpns/mainHeader.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 
 const mainStore = useMainStore()
-mainStore.fetchRoleMenu(localStorage.getItem('roleId'))
+const { roleMenu } = mainStore
 
 const mainAsideRef = ref()
 const isCollapse = ref()
@@ -33,6 +40,28 @@ function onChangeCollapse() {
   isCollapse.value = !isCollapse.value
   mainAsideRef.value.setCollapseState(isCollapse.value)
 }
+
+const route = useRoute()
+function changeCurrentActive() {
+  const currentActiveArr = []
+  for (let i = 0; i < roleMenu.length; i++) {
+    if (route.path.includes(roleMenu[i].url)) {
+      currentActiveArr.push(i.toString())
+      for (let j = 0; j < roleMenu[i].children.length; j++) {
+        if (route.path === roleMenu[i].children[j].url) {
+          currentActiveArr.push(j.toString())
+          break
+        }
+      }
+      break
+    }
+  }
+  return currentActiveArr.join('-')
+}
+
+const currentActive = computed(() => {
+  return changeCurrentActive(route.path)
+})
 </script>
 
 <style lang="less" scoped>
@@ -53,7 +82,7 @@ function onChangeCollapse() {
   }
 
   .main {
-    background-color: lightblue;
+    background-color: #eff1f4;
   }
 }
 </style>

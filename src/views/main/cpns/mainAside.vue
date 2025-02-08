@@ -4,7 +4,7 @@
       <img src="@/assets/img/logo.svg" class="icon" />
       <h4 class="text">Coderwhy-CMS</h4>
     </div>
-    <el-menu default-active="0-0" text-color="#fff" :collapse="isCollapse">
+    <el-menu :default-active="defaultActive" text-color="#fff" :collapse="isCollapse">
       <template v-for="(item, index) in menuList" :key="index">
         <el-sub-menu :index="index + ''">
           <template #title>
@@ -12,7 +12,9 @@
             <span>{{ item.name }}</span>
           </template>
           <template v-for="(iten, indey) in item.children" :key="indey">
-            <el-menu-item :index="`${index}-${indey}`">{{ iten.name }}</el-menu-item>
+            <el-menu-item :index="`${index}-${indey}`" @click="onMenuListClick(iten.url)">
+              {{ iten.name }}
+            </el-menu-item>
           </template>
         </el-sub-menu>
       </template>
@@ -21,6 +23,7 @@
 </template>
 
 <script setup>
+import router from '@/router'
 import { ref, toRaw } from 'vue'
 
 const props = defineProps({
@@ -28,11 +31,19 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  defaultActive: {
+    type: String,
+    default: '0-0',
+  },
 })
 
 const isCollapse = ref(false)
 function setCollapseState(state) {
   isCollapse.value = state
+}
+
+function onMenuListClick(url) {
+  router.push(url)
 }
 
 defineExpose({
@@ -62,6 +73,11 @@ defineExpose({
   .el-menu {
     border: none;
     background-color: #0c2135;
+    .is-active {
+      span {
+        color: #389aff;
+      }
+    }
 
     .el-sub-menu {
       :deep(.el-sub-menu__title) {
