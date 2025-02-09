@@ -4,7 +4,12 @@
       <img src="@/assets/img/logo.svg" class="icon" />
       <h4 class="text">Coderwhy-CMS</h4>
     </div>
-    <el-menu :default-active="defaultActive" text-color="#fff" :collapse="isCollapse">
+    <el-menu
+      :default-active="defaultActive"
+      text-color="#fff"
+      :collapse="isCollapse"
+      :collapse-transition="false"
+    >
       <template v-for="(item, index) in menuList" :key="index">
         <el-sub-menu :index="index + ''">
           <template #title>
