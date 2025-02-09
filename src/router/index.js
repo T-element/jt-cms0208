@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login',
+      redirect: '/main',
     },
     {
       path: '/login',
@@ -74,7 +74,6 @@ const freeRoute = {
   },
 }
 
-let firstView = true
 let firstRoute
 router.beforeEach((to) => {
   const token = localStorage.getItem('login/token')
@@ -83,8 +82,8 @@ router.beforeEach((to) => {
   }
 
   const mainStore = useMainStore()
-  if (to.path.startsWith('/main') && firstView) {
-    firstView = false
+  if (to.path.startsWith('/main') && mainStore.firstView) {
+    mainStore.firstView = false
     mainStore.fetchRoleMenu(localStorage.getItem('roleId')).then((res) => {
       res.forEach((key) => {
         if (key in freeRoute) {

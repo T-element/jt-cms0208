@@ -57,6 +57,7 @@
 
 <script setup>
 import router from '@/router'
+import useMainStore from '@/stores/main/main'
 
 defineProps({
   isCollapse: {
@@ -72,7 +73,9 @@ function onCollapseBtnClick() {
 
 const username = localStorage.getItem('name')
 
+const mainStore = useMainStore()
 function onLogoutBtnClick() {
+  mainStore.firstView = true
   router.push('/login')
 }
 </script>

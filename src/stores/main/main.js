@@ -6,6 +6,7 @@ const useMainStore = defineStore('mainStore', {
     return {
       roleMenu: [],
       freeRouteKey: [],
+      firstView: true,
     }
   },
   actions: {

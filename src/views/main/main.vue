@@ -43,6 +43,7 @@ function onChangeCollapse() {
 
 const route = useRoute()
 function changeCurrentActive() {
+  console.log('changeCurrentActive')
   const currentActiveArr = []
   for (let i = 0; i < roleMenu.length; i++) {
     if (route.path.includes(roleMenu[i].url)) {
