@@ -7,6 +7,7 @@
 <script setup>
 import { onMounted, ref, watchEffect } from 'vue'
 import * as echarts from 'echarts'
+import throttle from '@/utils/throttle'
 
 const props = defineProps({
   data: {
@@ -17,11 +18,13 @@ const props = defineProps({
 
 const chartRef = ref()
 let chart
+const throttleResizeFn = throttle(function () {
+  console.log('resize')
+  chart.resize()
+})
 onMounted(() => {
   chart = echarts.init(chartRef.value, 'light')
-  window.addEventListener('resize', function () {
-    chart.resize()
-  })
+  window.addEventListener('resize', throttleResizeFn)
   watchEffect(() => {
     setEchartOptions(props.data)
   })
