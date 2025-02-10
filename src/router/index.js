@@ -93,6 +93,7 @@ router.beforeEach((to) => {
       })
       router.push(to.path === '/main' ? firstRoute : to.path)
     })
+    return false
   }
 })
 
