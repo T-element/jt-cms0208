@@ -12,7 +12,6 @@ const useMainStore = defineStore('mainStore', {
   actions: {
     async fetchRoleMenu(roleId) {
       const res = await getRoleMenuByRoleId(roleId)
-      console.log('roleMenuSource', res.data.data)
       this.roleMenu = handleRoleMenuData(res.data.data, this)
       return [...this.freeRouteKey]
     },

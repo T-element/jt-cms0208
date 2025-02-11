@@ -37,7 +37,7 @@ const option = {
   },
   series: [
     {
-      name: 'Access From',
+      name: '商品数量',
       type: 'pie',
       radius: '50%',
       data: [],

@@ -32,7 +32,9 @@ onMounted(() => {
 })
 
 const option = {
+  //设置echart图形背景
   backgroundColor: 'transparent',
+  //设置echart图形标题
   title: {
     text: '全国销量统计',
     left: 'center',
@@ -40,14 +42,14 @@ const option = {
       color: '#000',
     },
   },
+  //设置鼠标悬浮提示
   tooltip: {
     trigger: 'item',
-    // formatter: function (params) {
-    //   return params.name + ' : ' + params.value[2]
-    // },
   },
+  //注册地图类型和设定地图数据
   geo: {
     map: 'china',
+    //开启鼠标拖拽和缩放
     roam: true,
     emphasis: {
       areaColor: '#f4cccc',
@@ -57,6 +59,7 @@ const option = {
       },
     },
   },
+  //是视觉映射组件，地图左下角的功能
   visualMap: {
     min: 0,
     max: 60000,
@@ -102,6 +105,7 @@ function setEchartOptions(data) {
   chart.setOption(option)
 }
 
+//地图数据转换函数
 function convertData(data) {
   var res = []
   for (var i = 0; i < data.length; i++) {

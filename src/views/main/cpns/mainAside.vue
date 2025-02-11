@@ -2,7 +2,8 @@
   <div class="mainAside">
     <div class="logo">
       <img src="@/assets/img/logo.svg" class="icon" />
-      <h4 class="text">Coderwhy-CMS</h4>
+      <!-- <h4 class="text">Coderwhy-CMS</h4> -->
+      <h4 class="text">CMS后台管理系统</h4>
     </div>
     <el-menu
       :default-active="defaultActive"
