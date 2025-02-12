@@ -2,12 +2,7 @@
   <div class="pageContent">
     <div class="header">
       <div class="title">{{ headerOption.title }}</div>
-      <el-button
-        class="createUser"
-        type="primary"
-        size="large"
-        @click="onCreateUserClick"
-      >
+      <el-button class="createUser" type="primary" size="large" @click="onCreateBtnClick">
         {{ headerOption.btnName }}
       </el-button>
     </div>
@@ -97,6 +92,7 @@ export default {
     },
     totalCount: {
       type: Number,
+      default: 10,
     },
   },
 
@@ -120,16 +116,16 @@ export default {
   created() {
     this.debouncePagerChange = debounce(this.handlePagerChange, 100)
   },
-  emits: ['pagerChange', 'createUserClick', 'deleteUserClick', 'editUserClick'],
+  emits: ['pagerChange', 'createClick', 'deleteClick', 'editClick'],
   methods: {
-    onCreateUserClick() {
-      this.$emit('createUserClick')
+    onCreateBtnClick() {
+      this.$emit('createClick')
     },
     onEditClick(data) {
-      this.$emit('editUserClick', { ...data })
+      this.$emit('editClick', { ...data })
     },
     onDeleteClick(id) {
-      this.$emit('deleteUserClick', id)
+      this.$emit('deleteClick', id)
     },
     handlePagerChange() {
       this.$emit('pagerChange', { ...this.paginationConfig })

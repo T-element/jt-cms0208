@@ -10,6 +10,7 @@ const system = {
       },
       roleList: [],
       departmentList: [],
+      departmentTotalCount: 0,
     }
   },
   mutations: {
@@ -20,8 +21,9 @@ const system = {
     changeRoleList(state, list) {
       state.roleList = list
     },
-    changeDepartmentList(state, list) {
-      state.departmentList = list
+    changeDepartmentInfo(state, info) {
+      state.departmentList = info[0]
+      state.departmentTotalCount = info[1]
     },
   },
   actions: {
@@ -37,7 +39,7 @@ const system = {
 
     async fetchDepartmentList({ commit }, config) {
       const res = await getDepartmentList(config)
-      commit('changeDepartmentList', res.data.data.list)
+      commit('changeDepartmentInfo', [res.data.data.list, res.data.data.totalCount])
     },
   },
 }

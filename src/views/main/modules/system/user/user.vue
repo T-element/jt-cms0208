@@ -10,9 +10,9 @@
       :data="userList.list"
       :total-count="userList.totalCount"
       @pager-change="handlePagerChange"
-      @create-user-click="handleCreateUser"
-      @delete-user-click="handleDeleteUser"
-      @edit-user-click="handleEditUser"
+      @create-click="handleCreateUser"
+      @delete-click="handleDeleteUser"
+      @edit-click="handleEditUser"
     >
       <template #enable="scoped">
         <el-button

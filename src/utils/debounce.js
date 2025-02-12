@@ -1,9 +1,9 @@
 function debounce(exeFn, delay = 100) {
   let timer = null
-  return function () {
+  return function (prop) {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
-      exeFn()
+      exeFn(prop)
       timer = null
     }, delay)
   }
