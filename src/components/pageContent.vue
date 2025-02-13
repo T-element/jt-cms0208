@@ -14,6 +14,8 @@
         :header-cell-style="{ textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
         size="large"
+        :tree-props="{ children: 'children' }"
+        row-key="id"
       >
         <template v-for="(item, index) in tableOption" :key="index">
           <el-table-column v-bind="item">
@@ -81,10 +83,7 @@ export default {
       required: true,
       default: [
         {
-          name: 'james',
-          realname: '詹姆斯',
-          cellphone: '133222223338',
-          enable: 1,
+          name: 'test',
           createAt: '2021-01-02T10:01:52.000Z',
           updateAt: '2021-01-02T10:01:52.000Z',
         },

@@ -1,4 +1,4 @@
-import { getDepartmentList, getRoleList, getUsersList } from '@/services'
+import { getDepartmentList, getMenuList, getRoleList, getUsersList } from '@/services'
 
 const system = {
   namespaced: true,
@@ -11,6 +11,7 @@ const system = {
       roleList: [],
       departmentList: [],
       departmentTotalCount: 0,
+      menuList: [],
     }
   },
   mutations: {
@@ -24,6 +25,9 @@ const system = {
     changeDepartmentInfo(state, info) {
       state.departmentList = info[0]
       state.departmentTotalCount = info[1]
+    },
+    changeMenuList(state, list) {
+      state.menuList = list
     },
   },
   actions: {
@@ -40,6 +44,11 @@ const system = {
     async fetchDepartmentList({ commit }, config) {
       const res = await getDepartmentList(config)
       commit('changeDepartmentInfo', [res.data.data.list, res.data.data.totalCount])
+    },
+
+    async fetchMenuList({ commit }) {
+      const res = await getMenuList()
+      commit('changeMenuList', res.data.data.list)
     },
   },
 }
