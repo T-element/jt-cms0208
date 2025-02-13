@@ -32,16 +32,19 @@ const system = {
   },
   actions: {
     async fetchUserList({ commit }, config = { offset: 0, size: 10 }) {
+      formatObjData(config)
       const res = await getUsersList(config)
       commit('changeUserList', res.data.data)
     },
 
     async fetchRoleList({ commit }, config) {
+      formatObjData(config)
       const res = await getRoleList(config)
       commit('changeRoleList', res.data.data.list)
     },
 
     async fetchDepartmentList({ commit }, config) {
+      formatObjData(config)
       const res = await getDepartmentList(config)
       commit('changeDepartmentInfo', [res.data.data.list, res.data.data.totalCount])
     },
@@ -51,6 +54,16 @@ const system = {
       commit('changeMenuList', res.data.data.list)
     },
   },
+}
+
+function formatObjData(data) {
+  if (data === null || data === undefined || !(data instanceof Object)) return
+  const keys = Object.keys(data)
+  keys.forEach((key) => {
+    if (typeof data[key] === 'string') {
+      data[key] = data[key].trim()
+    }
+  })
 }
 
 export default system
