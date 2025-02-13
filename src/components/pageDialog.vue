@@ -30,7 +30,7 @@
             <slot
               v-else-if="item.type === 'custom'"
               :name="item.slotName"
-              :data="item[key]"
+              :data="formData[item.key]"
             ></slot>
           </el-form-item>
         </template>

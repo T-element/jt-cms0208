@@ -15,7 +15,8 @@ const dialogOption = {
     },
     {
       type: 'custom',
-      key: 'intro',
+      key: 'menuList',
+      slotName: 'menuList',
     },
   ],
 }
