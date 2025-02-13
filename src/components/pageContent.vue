@@ -77,6 +77,10 @@ export default {
     option: {
       type: Object,
       required: true,
+      default: {
+        header: {},
+        content: {},
+      },
     },
     data: {
       type: Array,

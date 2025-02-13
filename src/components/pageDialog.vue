@@ -27,6 +27,11 @@
                 <el-option v-bind="iten" />
               </template>
             </el-select>
+            <slot
+              v-else-if="item.type === 'custom'"
+              :name="item.slotName"
+              :data="item[key]"
+            ></slot>
           </el-form-item>
         </template>
       </el-form>

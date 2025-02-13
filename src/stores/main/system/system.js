@@ -9,6 +9,7 @@ const system = {
         totalCount: 0,
       },
       roleList: [],
+      roleTotalCount: 0,
       departmentList: [],
       departmentTotalCount: 0,
       menuList: [],
@@ -19,8 +20,9 @@ const system = {
       state.userList.list = data.list
       state.userList.totalCount = data.totalCount
     },
-    changeRoleList(state, list) {
-      state.roleList = list
+    changeRoleList(state, info) {
+      state.roleList = info[0]
+      state.roleTotalCount = info[1]
     },
     changeDepartmentInfo(state, info) {
       state.departmentList = info[0]
@@ -32,19 +34,16 @@ const system = {
   },
   actions: {
     async fetchUserList({ commit }, config = { offset: 0, size: 10 }) {
-      formatObjData(config)
       const res = await getUsersList(config)
       commit('changeUserList', res.data.data)
     },
 
     async fetchRoleList({ commit }, config) {
-      formatObjData(config)
       const res = await getRoleList(config)
-      commit('changeRoleList', res.data.data.list)
+      commit('changeRoleList', [res.data.data.list, res.data.data.totalCount])
     },
 
     async fetchDepartmentList({ commit }, config) {
-      formatObjData(config)
       const res = await getDepartmentList(config)
       commit('changeDepartmentInfo', [res.data.data.list, res.data.data.totalCount])
     },
