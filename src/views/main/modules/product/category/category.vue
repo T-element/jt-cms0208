@@ -59,6 +59,7 @@ export default {
         offset: 0,
         size: 10,
       },
+      queryConfig: {},
     }
   },
   computed: {
@@ -77,7 +78,7 @@ export default {
         offset: --prop.currentPage * prop.size,
         size: prop.size,
       }
-      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, { ...this.requestConfig, ...queryConfig })
     },
     handleCreate() {
       this.$refs.dialogRef.setFormState({})
@@ -90,7 +91,7 @@ export default {
           type: 'warning',
         })
       }
-      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, { ...this.requestConfig, ...queryConfig })
     },
     handleEdit(data) {
       this.$refs.dialogRef.setFormState(data, 'edit')
@@ -103,13 +104,14 @@ export default {
       } else if (mode === 'edit') {
         res = await viewConfig.editFn(data)
       }
-      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, { ...this.requestConfig, ...queryConfig })
       ElMessage({
         message: res.data.data,
         type: res.data.code === 0 ? 'success' : 'error',
       })
     },
     handleQueryClick(data) {
+      this.queryConfig = { ...data }
       this.$store.dispatch(viewConfig.listPath, {
         ...this.requestConfig,
         ...data,
