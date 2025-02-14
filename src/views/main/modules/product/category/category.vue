@@ -10,21 +10,10 @@
       :data="categoryList"
       :total-count="categoryTotalCount"
       @pager-change="handlePagerChange"
-      @create-click="handleCreateCategory"
-      @delete-click="handleDeleteCategory"
-      @edit-click="handleEditCategory"
-    >
-      <template #enable="scoped">
-        <el-button
-          :type="scoped.data.enable === 1 ? 'success' : 'danger'"
-          size="small"
-          plain
-          @click="onEnableBtnClick(scoped)"
-        >
-          {{ scoped.data.enable === 1 ? '启用' : '禁用' }}
-        </el-button>
-      </template>
-    </PageContent>
+      @create-click="handleCreate"
+      @delete-click="handleDelete"
+      @edit-click="handleEdit"
+    />
     <PageDialog
       ref="dialogRef"
       :option="dialogOption"
@@ -43,6 +32,13 @@ import dialogOption from './options/dialogOption'
 import { mapState } from 'vuex'
 import { deleteCategoryById, createCategory, editCategory } from '@/services'
 
+const viewConfig = {
+  listPath: 'product/fetchCategoryInfo',
+  createFn: createCategory,
+  editFn: editCategory,
+  deleteFn: deleteCategoryById,
+}
+
 export default {
   components: {
     PageHeader,
@@ -58,14 +54,6 @@ export default {
       },
       contentOption,
       dialogOption,
-      // dialogData: {
-      //   name: '',
-      //   realname: '',
-      //   password: '',
-      //   cellphone: '',
-      //   departmentId: '',
-      //   roleId: '',
-      // },
 
       requestConfig: {
         offset: 0,
@@ -81,51 +69,48 @@ export default {
   },
   created() {
     const dispatch = this.$store.dispatch
-    dispatch('product/fetchCategoryInfo', this.requestConfig)
+    dispatch(viewConfig.listPath, this.requestConfig)
   },
   methods: {
-    onEnableBtnClick(prop) {
-      prop.data.enable === 1 ? (prop.data.enable = 0) : (prop.data.enable = 1)
-    },
     handlePagerChange(prop) {
       this.requestConfig = {
         offset: --prop.currentPage * prop.size,
         size: prop.size,
       }
-      this.$store.dispatch('product/fetchCategoryInfo', this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
     },
-    handleCreateCategory() {
+    handleCreate() {
       this.$refs.dialogRef.setFormState({})
     },
-    async handleDeleteCategory(id) {
-      const res = await deleteCategoryById(id)
+    async handleDelete(id) {
+      const res = await viewConfig.deleteFn(id)
       if (res.data.code !== 0) {
         ElMessage({
           message: res.data.data,
           type: 'warning',
         })
       }
-      this.$store.dispatch('system/fetchUserList', this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
     },
-    handleEditCategory(data) {
+    handleEdit(data) {
       this.$refs.dialogRef.setFormState(data, 'edit')
     },
     async handleConfirmClick(data, mode) {
       console.log(data, mode)
       let res
       if (mode === 'create') {
-        res = await createCategory(data)
+        res = await viewConfig.createFn(data)
       } else if (mode === 'edit') {
-        res = await editCategory(data)
+        res = await viewConfig.editFn(data)
       }
-      this.$store.dispatch('product/fetchCategoryInfo', this.requestConfig)
+      this.$store.dispatch(viewConfig.listPath, this.requestConfig)
       ElMessage({
         message: res.data.data,
         type: res.data.code === 0 ? 'success' : 'error',
       })
     },
     handleQueryClick(data) {
-      this.$store.dispatch('product/fetchCategoryInfo', {
+      this.$store.dispatch(viewConfig.listPath, {
         ...this.requestConfig,
         ...data,
       })
