@@ -6,6 +6,13 @@
           <el-icon size="25"><component :is="isCollapse ? 'Fold' : 'Expand'" /></el-icon>
         </template>
       </el-button>
+      <el-breadcrumb :separator-icon="ArrowRight">
+        <template v-for="(item, index) in Breadcrumbdata" :key="index">
+          <el-breadcrumb-item :to="{ path: index === 0 ? '' : item.path }">
+            {{ item.name }}
+          </el-breadcrumb-item>
+        </template>
+      </el-breadcrumb>
     </div>
     <div class="right">
       <el-button text>
@@ -58,6 +65,11 @@
 <script setup>
 import router from '@/router'
 import useMainStore from '@/stores/main/main'
+import { ArrowRight } from '@element-plus/icons-vue'
+import { useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
+
+const mainStore = useMainStore()
 
 defineProps({
   isCollapse: {
@@ -73,11 +85,32 @@ function onCollapseBtnClick() {
 
 const username = localStorage.getItem('name')
 
-const mainStore = useMainStore()
 function onLogoutBtnClick() {
   mainStore.firstView = true
   router.push('/login')
 }
+
+const route = useRoute()
+let currentPath = route.path
+const Breadcrumbdata = ref([])
+watch(route, (newValue) => {
+  console.log(newValue)
+  currentPath = route.path
+  Breadcrumbdata.value.length = 0
+  handleBreadcrumbData(mainStore.roleMenu)
+})
+function handleBreadcrumbData(data) {
+  if (data === null || data === undefined || !Array.isArray(data)) return data
+
+  data.forEach((item) => {
+    if (currentPath.includes(item.url)) {
+      Breadcrumbdata.value.push({ name: item.name, path: item.url })
+
+      if ('children' in item) handleBreadcrumbData(item.children)
+    }
+  })
+}
+handleBreadcrumbData(mainStore.roleMenu)
 </script>
 
 <style lang="less" scoped>
@@ -86,6 +119,11 @@ function onLogoutBtnClick() {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+
+  .left {
+    display: flex;
+    align-items: center;
+  }
 
   .right {
     display: flex;
