@@ -1,10 +1,24 @@
 <template>
   <div class="list">
-    <h1>list</h1>
+    <PageContent :option="contentOption" />
   </div>
 </template>
 
-<script setup></script>
+<script>
+import PageContent from '@/components/pageContent.vue'
+import contentOption from './options/contentOption'
+
+export default {
+  components: {
+    PageContent,
+  },
+  data() {
+    return {
+      contentOption,
+    }
+  },
+}
+</script>
 
 <style lang="less" scoped>
 .list {
