@@ -21,6 +21,11 @@ const router = createRouter({
   ],
 })
 
+const overviewCpn =
+  import.meta.env.MODE === 'production'
+    ? () => import('@/views/main/modules/analysis/overview/overview1.vue')
+    : () => import('@/views/main/modules/analysis/overview/overview.vue')
+
 const freeRoute = {
   dashboard: {
     name: 'dashboard',
@@ -30,7 +35,7 @@ const freeRoute = {
   overview: {
     name: 'overview',
     path: '/main/analysis/overview',
-    component: () => import('@/views/main/modules/analysis/overview/overview.vue'),
+    component: overviewCpn,
   },
   category: {
     name: 'category',
