@@ -39,13 +39,18 @@ import useContent from '@/mixins/useContent'
 import useHeader from '@/mixins/useHeader'
 import useDialog from '@/mixins/useDialog'
 import { mapState } from 'vuex'
-import { createDepartment, getDepartmentById, patchDepartment } from '@/services'
+import {
+  createDepartment,
+  getDepartmentById,
+  patchDepartment,
+  deleteDepartmentById,
+} from '@/services'
 
 const viewConfig = {
   listPath: 'system/fetchDepartmentList',
   createFn: createDepartment,
   editFn: patchDepartment,
-  deleteFn: getDepartmentById,
+  deleteFn: deleteDepartmentById,
 }
 const contentMixin = useContent(viewConfig)
 const HeaderMixin = useHeader(viewConfig)
