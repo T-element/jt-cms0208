@@ -25,8 +25,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 //生产环境消除console.log的打印
-if (import.meta.env === 'prodtction') {
-  console.log = () => {}
+if (import.meta.env.MODE === 'production') {
+  console.log = (prop) => {}
 }
 
 app.mount('#app')
