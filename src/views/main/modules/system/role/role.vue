@@ -109,7 +109,7 @@ export default {
         type: res.data.code === 0 ? 'success' : 'error',
       })
     },
-    async handleEditRole(data) {
+    async handleEdit(data) {
       console.log(data)
       this.$refs.dialogRef.setFormState(data, 'edit')
       const res = await getRoleMenuIds(data.id)
