@@ -10,9 +10,9 @@
       :data="userList.list"
       :total-count="userList.totalCount"
       @pager-change="handlePagerChange"
-      @create-click="handleCreateUser"
-      @delete-click="handleDeleteUser"
-      @edit-click="handleEditUser"
+      @create-click="handleCreate"
+      @delete-click="handleDelete"
+      @edit-click="handleEdit"
     >
       <template #enable="scoped">
         <el-button
@@ -40,8 +40,21 @@ import PageDialog from '@/components/pageDialog.vue'
 import headerOption from './options/headerOption'
 import contentOption from './options/contentOption'
 import dialogOption from './options/dialogOption'
+import useContent from '@/mixins/useContent'
+import useHeader from '@/mixins/useHeader'
+import useDialog from '@/mixins/useDialog'
 import { mapState } from 'vuex'
 import { createUser, deleteUserById, patchUser } from '@/services'
+
+const viewConfig = {
+  listPath: 'system/fetchUserList',
+  createFn: createUser,
+  editFn: patchUser,
+  deleteFn: deleteUserById,
+}
+const contentMixin = useContent(viewConfig)
+const HeaderMixin = useHeader(viewConfig)
+const dialogMixin = useDialog(viewConfig)
 
 export default {
   components: {
@@ -49,6 +62,7 @@ export default {
     PageContent,
     PageDialog,
   },
+  mixins: [contentMixin, HeaderMixin, dialogMixin],
   data() {
     return {
       headerOption,
@@ -71,6 +85,7 @@ export default {
       },
 
       requestConfig: null,
+      queryConfig: {},
     }
   },
   computed: {
@@ -94,55 +109,8 @@ export default {
     onEnableBtnClick(prop) {
       prop.data.enable === 1 ? (prop.data.enable = 0) : (prop.data.enable = 1)
     },
-    handlePagerChange(prop) {
-      this.requestConfig = {
-        offset: --prop.currentPage * prop.size,
-        size: prop.size,
-      }
-      this.$store.dispatch('system/fetchUserList', this.requestConfig)
-    },
-    handleCreateUser() {
-      this.$refs.dialogRef.setFormState({ ...this.dialogData })
-    },
-    async handleDeleteUser(id) {
-      const res = await deleteUserById(id)
-      if (res.data.code !== 0) {
-        ElMessage({
-          message: res.data.data,
-          type: 'warning',
-        })
-      }
-      this.$store.dispatch('system/fetchUserList', this.requestConfig)
-    },
     handleEditUser(data) {
       this.$refs.dialogRef.setFormState(data, 'edit')
-    },
-    async handleConfirmClick(data, mode) {
-      let res
-      if (mode === 'create') {
-        res = await createUser(data)
-        this.$store.dispatch('system/fetchUserList', this.requestConfig)
-      } else if (mode === 'edit') {
-        res = await patchUser(data)
-        this.$store.dispatch('system/fetchUserList', this.requestConfig)
-      }
-      ElMessage({
-        message: res.data.data,
-        type: res.data.code === 0 ? 'success' : 'error',
-      })
-    },
-    handleQueryClick(data) {
-      this.$store.dispatch('system/fetchUserList', data)
-    },
-
-    setupDialogSelectOption(list, targetLabel) {
-      const selectOptions = list.map((item) => {
-        return { label: item.name, value: item.id }
-      })
-      const index = this.dialogOption.formOption.findIndex(
-        (item) => item.label === targetLabel,
-      )
-      this.dialogOption.formOption[index].selectOptions = selectOptions
     },
   },
 }

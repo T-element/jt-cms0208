@@ -36,7 +36,7 @@ const system = {
     async fetchUserList({ commit }, config = { offset: 0, size: 10 }) {
       const res = await getUsersList(config)
       if (res.status !== 200) {
-        console.log('网络错误', res)
+        console.log('请求失败', res)
         return
       }
       commit('changeUserList', res.data.data)

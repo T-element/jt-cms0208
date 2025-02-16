@@ -10,9 +10,9 @@
       :data="departmentList"
       :total-count="departmentTotalCount"
       @pager-change="handlePagerChange"
-      @create-click="handleCreateDepartment"
-      @edit-click="handleEditDepartment"
-      @delete-click="handleDeleteDepartment"
+      @create-click="handleCreate"
+      @delete-click="handleDelete"
+      @edit-click="handleEdit"
     >
       <template #leader="scoped">
         <span>
@@ -35,8 +35,21 @@ import PageDialog from '@/components/pageDialog.vue'
 import headerOption from './options/headerOption'
 import contentOption from './options/contentOption'
 import dialogOption from './options/dialogOption'
+import useContent from '@/mixins/useContent'
+import useHeader from '@/mixins/useHeader'
+import useDialog from '@/mixins/useDialog'
 import { mapState } from 'vuex'
 import { createDepartment, getDepartmentById, patchDepartment } from '@/services'
+
+const viewConfig = {
+  listPath: 'system/fetchDepartmentList',
+  createFn: createDepartment,
+  editFn: patchDepartment,
+  deleteFn: getDepartmentById,
+}
+const contentMixin = useContent(viewConfig)
+const HeaderMixin = useHeader(viewConfig)
+const dialogMixin = useDialog(viewConfig)
 
 export default {
   components: {
@@ -73,47 +86,8 @@ export default {
       departmentTotalCount: (state) => state.departmentTotalCount,
     }),
   },
+  mixins: [contentMixin, HeaderMixin, dialogMixin],
   methods: {
-    handlePagerChange(info) {
-      let { currentPage, size } = info
-      this.requestConfig.offset = --currentPage * size
-      this.requestConfig.size = size
-      this.$store.dispatch('system/fetchDepartmentList', this.requestConfig)
-    },
-    handleCreateDepartment() {
-      this.$refs.dialogRef.setFormState({ ...this.dialogData })
-    },
-    async handleConfirmClick(data, mode) {
-      let res
-      if (mode === 'create') {
-        res = await createDepartment(data)
-        this.$store.dispatch('system/fetchDepartmentList', this.requestConfig)
-      } else if (mode === 'edit') {
-        res = await patchDepartment(data)
-        this.$store.dispatch('system/fetchDepartmentList', this.requestConfig)
-      }
-      ElMessage({
-        message: res.data.data,
-        type: res.data.code === 0 ? 'success' : 'error',
-      })
-    },
-    handleEditDepartment(info) {
-      this.$refs.dialogRef.setFormState(info, 'edit')
-    },
-    async handleDeleteDepartment(info) {
-      const res = await deleteUserById(info)
-      if (res.data.code !== 0) {
-        ElMessage({
-          message: res.data.data,
-          type: 'warning',
-        })
-      }
-      this.$store.dispatch('system/fetchUserList', this.requestConfig)
-    },
-    handleQueryClick(info) {
-      this.$store.dispatch('system/fetchDepartmentList', info)
-    },
-
     mapDepartmentByParentId(id) {
       if (id === undefined || id === null) return
       const res = this.parentDpm.get(id)
@@ -124,15 +98,6 @@ export default {
         })
       }
       return res
-    },
-    setupDialogSelectOption(list, targetLabel) {
-      const selectOptions = list.map((item) => {
-        return { label: item.name, value: item.id }
-      })
-      const index = this.dialogOption.formOption.findIndex(
-        (item) => item.label === targetLabel,
-      )
-      this.dialogOption.formOption[index].selectOptions = selectOptions
     },
   },
 

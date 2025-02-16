@@ -10,9 +10,9 @@
       :data="roleList"
       :total-count="roleTotalCount"
       @pager-change="handlePagerChange"
-      @delete-click="handleDeleteRole"
-      @create-click="handleCreateRole"
-      @edit-click="handleEditRole"
+      @create-click="handleCreate"
+      @delete-click="handleDelete"
+      @edit-click="handleEdit"
     />
     <PageDialog
       ref="dialogRef"
@@ -40,8 +40,21 @@ import PageDialog from '@/components/pageDialog.vue'
 import headerOption from './options/headerOption'
 import contentOption from './options/contentOption'
 import dialogOption from './options/dialogOption'
+import useContent from '@/mixins/useContent'
+import useHeader from '@/mixins/useHeader'
+import useDialog from '@/mixins/useDialog'
 import { mapState } from 'vuex'
 import { createRole, deleteRoleById, getRoleMenuIds, patchRole } from '@/services'
+
+const viewConfig = {
+  listPath: 'system/fetchRoleList',
+  createFn: createRole,
+  editFn: patchRole,
+  deleteFn: deleteRoleById,
+}
+const contentMixin = useContent(viewConfig)
+const HeaderMixin = useHeader(viewConfig)
+const dialogMixin = useDialog(viewConfig)
 
 export default {
   components: {
@@ -49,6 +62,7 @@ export default {
     PageContent,
     PageDialog,
   },
+  mixins: [contentMixin, HeaderMixin, dialogMixin],
   data() {
     return {
       headerOption,
@@ -76,38 +90,9 @@ export default {
       roleTotalCount: (state) => state.roleTotalCount,
       menuList: (state) => state.menuList,
     }),
-    // menuList() {
-    //   const menuList = this.$store.state.system.menuList
-    //   return menuList.map((item) => {
-    //     return this.formatMenuItem(item)
-    //   })
-    // },
   },
 
   methods: {
-    handleQueryClick(prop) {
-      this.$store.dispatch('system/fetchRoleList', prop)
-    },
-    handlePagerChange(prop) {
-      this.requestConfig = {
-        offset: --prop.currentPage * prop.size,
-        size: prop.size,
-      }
-      this.$store.dispatch('system/fetchRoleList', this.requestConfig)
-    },
-    async handleDeleteRole(id) {
-      const res = await deleteRoleById(id)
-      if (res.data.code !== 0) {
-        ElMessage({
-          message: res.data.data,
-          type: 'warning',
-        })
-      }
-      this.$store.dispatch('system/fetchRoleList', this.requestConfig)
-    },
-    handleCreateRole() {
-      this.$refs.dialogRef.setFormState({})
-    },
     async handleConfirmClick(data, mode) {
       data.menuList = this.$refs.elTreeRef.getCheckedKeys(false)
       console.log(data)
