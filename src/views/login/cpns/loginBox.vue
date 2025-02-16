@@ -54,8 +54,8 @@ import { ref, reactive } from 'vue'
 
 const accountFormRef = ref()
 const accountForm = ref({
-  name: localStorage.getItem('name') ?? '',
-  password: localStorage.getItem('password') ?? '',
+  name: localStorage.getItem('name') ?? 'jtdemo',
+  password: localStorage.getItem('password') ?? '123456',
 })
 
 function accountPass(rule, value, callback) {

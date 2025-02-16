@@ -34,12 +34,9 @@
       </el-badge>
       <el-dropdown>
         <div class="userInfo">
-          <img
-            src="https://upload.jianshu.io/users/upload_avatars/1102036/c3628b478f06.jpeg"
-            alt=""
-            class="icon"
-          />
-          <div class="text">{{ username }}</div>
+          <img src="@/assets/img/user.jpg" alt="" class="icon" />
+          <!-- <div class="text">{{ username }}</div> -->
+          <div class="text">jt-cms</div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
