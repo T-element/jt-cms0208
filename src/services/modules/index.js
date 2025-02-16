@@ -4,7 +4,6 @@ const jtRequest = new JTRequest({
   interceptors: {
     request: {
       successFn: (config) => {
-        console.log('requestSuccess', config)
         formatObjData(config.data)
         if (config.url === '/login') return config
         config.headers = {
@@ -17,16 +16,16 @@ const jtRequest = new JTRequest({
         return config
       },
     },
-    // response: {
-    //   successFn: (config) => {
-    //     console.log('responeSuccess', config)
-    //     return config
-    //   },
-    //   failFn: (config) => {
-    //     console.log('responeFail', config)
-    //     return config
-    //   },
-    // },
+    response: {
+      successFn: (config) => {
+        console.log('responeSuccess', config)
+        return config
+      },
+      failFn: (error) => {
+        console.log('responeFail', error)
+        return Promise.resolve({ status: error.status, message: error.response.data })
+      },
+    },
   },
 })
 

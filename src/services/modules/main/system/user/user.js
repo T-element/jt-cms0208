@@ -5,6 +5,7 @@ export function getUsersList(config) {
     url: '/users/list',
     data: {
       ...config,
+      test: '哈哈哈哈',
     },
   })
 }
