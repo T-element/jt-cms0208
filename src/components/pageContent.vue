@@ -2,9 +2,16 @@
   <div class="pageContent">
     <div class="header">
       <div class="title">{{ headerOption.title }}</div>
-      <el-button class="createUser" type="primary" size="large" @click="onCreateBtnClick">
-        {{ headerOption.btnName }}
-      </el-button>
+      <div class="createUser">
+        <el-button
+          v-if="!!headerOption.btnName"
+          type="primary"
+          size="large"
+          @click="onCreateBtnClick"
+        >
+          {{ headerOption.btnName }}
+        </el-button>
+      </div>
     </div>
     <div class="content">
       <el-table
@@ -88,8 +95,8 @@ export default {
       default: [
         {
           name: 'test',
-          createAt: '2021-01-02T10:01:52.000Z',
-          updateAt: '2021-01-02T10:01:52.000Z',
+          createAt: '2025-01-02T10:01:52.000Z',
+          updateAt: '2025-01-02T10:01:52.000Z',
         },
       ],
     },
