@@ -1,4 +1,4 @@
-import { getRoleMenuByRoleId } from '@/services'
+import { getRoleMenuByRoleId, queryRoleById } from '@/services'
 import { defineStore } from 'pinia'
 
 const useMainStore = defineStore('mainStore', {
@@ -11,8 +11,9 @@ const useMainStore = defineStore('mainStore', {
   },
   actions: {
     async fetchRoleMenu(roleId) {
-      const res = await getRoleMenuByRoleId(roleId)
-      this.roleMenu = handleRoleMenuData(res.data.data, this)
+      const res1 = await queryRoleById(roleId)
+      const res2 = await getRoleMenuByRoleId(res1.data.data.role.id)
+      this.roleMenu = handleRoleMenuData(res2.data.data, this)
       return [...this.freeRouteKey]
     },
   },

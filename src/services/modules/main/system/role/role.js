@@ -14,3 +14,9 @@ export function createRole(data) {
     },
   })
 }
+
+export function queryRoleById(id) {
+  return jtRequest.get({
+    url: `/users/${id}`,
+  })
+}
