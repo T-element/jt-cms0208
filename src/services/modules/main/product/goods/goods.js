@@ -25,11 +25,12 @@ export function createGoods(config) {
 }
 
 export function editGoods(config) {
-  const { id, name } = config
+  const { id } = config
+  console.log(config)
   return jtRequest.patch({
     url: `/goods/${id}`,
     data: {
-      name,
+      ...config,
     },
   })
 }

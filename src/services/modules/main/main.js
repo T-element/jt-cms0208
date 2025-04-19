@@ -2,6 +2,7 @@ import jtRequest from '..'
 
 export function getRoleMenuByRoleId(roleId) {
   return jtRequest.get({
-    url: `/role/${roleId}/menu`,
+    // url: `/role/${roleId}/menu`,
+    url: `/systemMenu/${roleId}`
   })
 }

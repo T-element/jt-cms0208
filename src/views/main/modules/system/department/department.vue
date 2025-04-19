@@ -36,7 +36,12 @@ import headerOption from './options/headerOption'
 import contentOption from './options/contentOption'
 import dialogOption from './options/dialogOption'
 import { mapState } from 'vuex'
-import { createDepartment, getDepartmentById, patchDepartment } from '@/services'
+import {
+  createDepartment,
+  getDepartmentById,
+  patchDepartment,
+  deleteDepartmentById,
+} from '@/services'
 
 export default {
   components: {
@@ -101,14 +106,14 @@ export default {
       this.$refs.dialogRef.setFormState(info, 'edit')
     },
     async handleDeleteDepartment(info) {
-      const res = await deleteUserById(info)
+      const res = await deleteDepartmentById(info)
       if (res.data.code !== 0) {
         ElMessage({
           message: res.data.data,
           type: 'warning',
         })
       }
-      this.$store.dispatch('system/fetchUserList', this.requestConfig)
+      this.$store.dispatch('system/fetchDepartmentList', this.requestConfig)
     },
     handleQueryClick(info) {
       this.$store.dispatch('system/fetchDepartmentList', info)
