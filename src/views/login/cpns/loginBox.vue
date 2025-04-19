@@ -54,7 +54,7 @@ import { ref, reactive } from 'vue'
 
 const accountFormRef = ref()
 const accountForm = ref({
-  name: localStorage.getItem('name') ?? 'jtdemo',
+  name: localStorage.getItem('name') ?? 'coderjt',
   password: localStorage.getItem('password') ?? '123456',
 })
 

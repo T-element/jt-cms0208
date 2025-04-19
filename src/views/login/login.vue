@@ -42,10 +42,10 @@ function onLoginBtnClick() {
   loginBoxRef.value.accountValidate()((valid) => {
     if (valid) {
       const loginInfo = loginBoxRef.value.getLoginInfo()
-      if (loginInfo.name === 'jtdemo') loginInfo.name = 'coderwhy'
+      // if (loginInfo.name === 'jtdemo') loginInfo.name = 'coderwhy'
       loginRequest({ ...loginInfo })
         .then((res) => {
-          if (loginInfo.name === 'coderwhy') loginInfo.name = 'jtdemo'
+          // if (loginInfo.name === 'coderwhy') loginInfo.name = 'jtdemo'
           if (isRemPwd.value) {
             console.log(loginInfo)
             localStorage.setItem('name', loginInfo.name)
