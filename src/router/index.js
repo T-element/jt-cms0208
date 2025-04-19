@@ -93,7 +93,7 @@ router.beforeEach((to) => {
   const mainStore = useMainStore()
   if (to.path.startsWith('/main') && mainStore.firstView) {
     mainStore.firstView = false
-    mainStore.fetchRoleMenu(localStorage.getItem('roleId')).then((res) => {
+    mainStore.fetchRoleMenu(localStorage.getItem('userId')).then((res) => {
       res.forEach((key) => {
         if (key in freeRoute) {
           if (!firstRoute) firstRoute = freeRoute[key].path

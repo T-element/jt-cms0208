@@ -1,8 +1,8 @@
 import jtRequest from '..'
 
-export function getRoleMenuByRoleId(roleId) {
+export function getRoleMenuByRoleId(userId) {
   return jtRequest.get({
     // url: `/role/${roleId}/menu`,
-    url: `/systemMenu/${roleId}`
+    url: `/systemMenu/${userId}`
   })
 }

@@ -47,7 +47,6 @@ function onLoginBtnClick() {
         .then((res) => {
           // if (loginInfo.name === 'coderwhy') loginInfo.name = 'jtdemo'
           if (isRemPwd.value) {
-            console.log(loginInfo)
             localStorage.setItem('name', loginInfo.name)
             localStorage.setItem('password', loginInfo.password)
           } else {
@@ -55,7 +54,7 @@ function onLoginBtnClick() {
             localStorage.removeItem('password')
           }
           localStorage.setItem('login/token', res.data.data.token)
-          localStorage.setItem('roleId', res.data.data.id)
+          localStorage.setItem('userId', res.data.data.id)
 
           router.push('/main')
         })

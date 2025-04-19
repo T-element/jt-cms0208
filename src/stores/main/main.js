@@ -10,10 +10,12 @@ const useMainStore = defineStore('mainStore', {
     }
   },
   actions: {
-    async fetchRoleMenu(roleId) {
-      const res1 = await queryRoleById(roleId)
-      const res2 = await getRoleMenuByRoleId(res1.data.data.role.id)
-      this.roleMenu = handleRoleMenuData(res2.data.data, this)
+    async fetchRoleMenu(userId) {
+      // const res1 = await queryRoleById(roleId)
+      // const res2 = await getRoleMenuByRoleId(userId)
+      // this.roleMenu = handleRoleMenuData(res2.data.data, this)
+      const res = await getRoleMenuByRoleId(userId)
+      this.roleMenu = handleRoleMenuData(res.data.data, this)
       return [...this.freeRouteKey]
     },
   },
