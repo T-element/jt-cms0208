@@ -6,7 +6,4 @@
 
 <script setup></script>
 
-<style lang="less" scoped>
-.notFound {
-}
-</style>
+<style lang="less" scoped></style>
